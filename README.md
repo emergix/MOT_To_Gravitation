@@ -19,7 +19,8 @@ This paper presents significant advancements in **Martingale Optimal Transport (
   - Extends Kantorovich duality and KKT conditions for constrained MOT.
   - Leverages information geometry to unify e/m-projections and Bregman divergences.
 
----
+📄 **Read the paper**: [From_OT_To_Gravitation.pdf](./pdf/From_OT_To_Gravitation.pdf)
+
 
 ## Applications
 
