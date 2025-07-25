@@ -4,28 +4,83 @@ This repository contains a LaTeX-based scientific paper exploring **probabilisti
 
 ## Overview
 
-The document introduces a structured probabilistic modeling approach based on hierarchical HMMs, building up from classical HMMs to more sophisticated representations. It places special emphasis on:
+This paper presents significant advancements in **Martingale Optimal Transport (MOT)** by incorporating additional constraints. The core innovation is an extension of the Sinkhorn algorithm that handles these constraints via geometric projections, improving computational efficiency and broadening applications in finance, physics, and operations research. Key contributions include:
 
-- Graphical interpretation and transition dynamics
-- Recursive state dependencies and observation structures
-- Parametrization of emission and transition probabilities
-- Integration with variational and optimal transport formulations
+- **Extended Sinkhorn Algorithm**:
+  - Modifies the classical algorithm to include constraints as additional projections using non-commutative analysis.
+  - Introduces **e-projections** (divergence minimization w.r.t. the first dimension) and **m-projections** (loss minimization w.r.t. the second dimension).
+  - Ensures monotonic convergence while satisfying marginal and martingality constraints.
 
-## Highlights
+- **Computational Enhancements**:
+  - Merges **BFGS optimization** with Bregman projections to handle non-linear constraints (e.g., Asian option prices).
+  - Uses Kullback-Leibler (KL) divergence for efficient iterative proportional fitting.
 
-- **Graphical Models Formalism**: Directed graphs are used to express conditional independence and factorization properties in complex models.
-- **HHMM Recursion**: Clear presentation of recursive structure using parent/child node indexing.
-- **Optimal Transport Connection**: Discussion of how transport distances (like Wasserstein) and entropy regularization relate to inference in probabilistic models.
+- **Theoretical Framework**:
+  - Extends Kantorovich duality and KKT conditions for constrained MOT.
+  - Leverages information geometry to unify e/m-projections and Bregman divergences.
 
-## Structure
+---
 
-The paper is organized as follows:
+## Applications
 
-1. **Graphical Model Framework** – Introducing probabilistic dependencies through DAGs.
-2. **Markov Models & HMMs** – Building the base case for inference and likelihood formulation.
-3. **Hierarchical HMMs (HHMMs)** – Extending HMMs to nested temporal structures.
-4. **Probability Laws in Trees** – Recursive and parametric view of HHMM transitions.
-5. **Application to Variational Inference and OT** – Sketching a link with optimal transport.
+### Finance
+- **Exotic Option Pricing**:  
+  MOT with volatility smile constraints prices **Equinox options** (a "light exotic" autocall structure) more accurately than traditional models. The payoff:  
+  \[
+  P = G \left( \mathbb{E}[1_{S_1 \geq B}] + \mathbb{E}[1_{S_1 \leq B \& S_2 \geq K}(S_2 - K)] 
+ight)
+  \]
+  - \(S_1, S_2\): Asset prices at observation dates  
+  - \(B\): Barrier, \(K\): Strike  
+
+- **Deep Hedging**:  
+  Closed-form hedge ratios for Equinox enable realistic Monte Carlo simulations of hedging costs under transaction costs and regulatory constraints.
+
+### Gravitation & Quantum Physics
+- **Quantum Gravity**:  
+  Appendix sections (10, C.16–C.18) propose using **Multi-Marginal Optimal Transport (MMOT)** to model quantum gravity effects:
+  - **Modified Newtonian Potential**: Bayesian MMOT frameworks may describe mass distributions in spacetime.
+  - **Renormalization**: OT divergences (e.g., KL) could address UV divergences in quantum field theories.
+
+- **Schrödinger Bridge Matching**:  
+  Connects OT to quantum dynamics via entropy-regularized paths.
+
+---
+
+## Key Algorithms
+
+- **Extended Sinkhorn for MOT**:  
+  Iteratively updates transport plan \(\pi(x,y)\) using:  
+  \[
+  \pi(x,y) = \exp\left(rac{-C(x,y) + \phi(x) + \psi(y) + 	heta(x)(y-x) + \delta g(x,y)}{\epsilon} - 1
+ight)
+  \]  
+  Constraints (e.g., martingality \(\int y \pi(x,y) dy = x\mu(x)\)) are linearized for BFGS integration.
+
+- **BFGS-enhanced Projections**:  
+  Combines quasi-Newton BFGS with Sinkhorn to enforce constraints like Asian option prices:  
+  \[
+  \min_{\delta} \int\int g(y,x) \pi(x,y)  dx  dy = p_{	ext{market}}
+  \]
+
+- **Iterative Proportional Fitting (IPF)**:  
+  Alternating e-projections to fit marginals via KL minimization:  
+  \[
+  Q^{(n+1)} = rg\min_{Q \in \Pi(\mu_0,\cdot)} D_{KL}[Q : Q^{(n)}]
+  \]
+
+---
+
+## Future Research
+
+- **Multi-Marginal MOT (MMOT)**:  
+  Scaling to 100–1000 maturities for autocallable pricing using sparsity/Markovianity.
+- **Quantum Gravity via MMOT**:  
+  Bayesian approaches to model quantum effects in gravity (Section 10.4).
+- **Generative Modeling**:  
+  Links to diffusion models and optimal control (Section 11.8).
+
+---
 
 ## Prerequisites
 
